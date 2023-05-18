@@ -31,7 +31,7 @@ public class HelloController implements Initializable {
         gc = canvas.getGraphicsContext2D();
         canvas.setFocusTraversable(true);
         canvas.setOnKeyPressed(this::onKeyPressed);
-        String uriBack ="file:"+ HelloApplication.class.getResource("fondoL1.png").getPath();
+        String uriBack ="file:"+ HelloApplication.class.getResource("fondoLv1.png").getPath();
         background=new Image(uriBack);
         canvas.setOnKeyReleased(this::onKeyReleased);
         canvas.setOnMousePressed(this::onMousePressed);
