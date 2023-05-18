@@ -228,7 +228,7 @@ public class HelloController implements Initializable {
                 if (Qpressed){
                     if (avatar.getSecondWeapon()==1){
                         avatar.setSecondWeapon(2);
-                    }else if (avatar.getSecondWeapon()==2){
+                    }else{
                         avatar.setSecondWeapon(1);
                     }
                     avatar.setAmmo(5);
