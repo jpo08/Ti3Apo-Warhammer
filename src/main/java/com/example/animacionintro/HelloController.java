@@ -38,6 +38,7 @@ public class HelloController implements Initializable {
         canvas.setOnMouseMoved(this::onMouseMoved);
         avatar = new Avatar();
         ammoBox.add(new AmmoBox(canvas));
+        portal = new Portal(canvas);
         enemies.add(new Enemy(new Vector(400,100)));
         enemies.add(new Enemy(new Vector(400,300)));
         draw();
@@ -129,6 +130,7 @@ public class HelloController implements Initializable {
     private Weapon gun1;
 
     private ArrayList<AmmoBox> ammoBox=new ArrayList<>();
+    private  Portal portal;
 
 
 
