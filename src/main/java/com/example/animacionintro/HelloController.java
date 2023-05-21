@@ -12,6 +12,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -300,6 +301,12 @@ public class HelloController implements Initializable {
         return x<-15 || y<-15 || x>canvas.getWidth() || y>canvas.getHeight();
     }
 
+    public void victoryMessage(){
+        HelloApplication.openWindow("victory-view.fxml");
+        Stage stage = (Stage) canvas.getScene().getWindow();
+        stage.close();
+    }
+
     public void detectPortalColision(Level level){
         if (level.getEnemies().size()<1){
             double distancePortal=Math.sqrt(
@@ -312,6 +319,7 @@ public class HelloController implements Initializable {
                     avatar.pos.setY(canvas.getHeight()/2);
                 }else {
                     //completo el juego
+                   victoryMessage();
                 }
 
 
