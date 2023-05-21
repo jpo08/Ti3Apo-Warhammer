@@ -4,7 +4,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
-public class Enemy extends Drawing{
+public class Enemy extends Drawing implements Runnable{
 
     private Image sprite;
 
@@ -22,6 +22,23 @@ public class Enemy extends Drawing{
     public void draw(GraphicsContext gc,boolean m) {
         gc.drawImage(sprite,pos.getX()-25, pos.getY()-25, 50,50);
 
+    }
+
+    @Override
+    public void run(){
+        //Tercer plano
+        while (!isDead){
+            double deltaX = Math.random()*6-3;
+            double deltaY = Math.random()*6-3;
+
+            pos.setY(pos.getY()+deltaY);
+            pos.setX(pos.getX()+deltaX);
+            try {
+                Thread.sleep(100);
+            }catch (InterruptedException e){
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     public int getnLifes() {

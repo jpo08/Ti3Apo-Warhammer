@@ -16,7 +16,7 @@ public class Portal extends Drawing{
 
     @Override
     public void draw(GraphicsContext gc, boolean move) {
-        gc.drawImage(sprite,pos.getX()-20,pos.getY()-20,40,40);
+        gc.drawImage(sprite,pos.getX()-30,pos.getY()-30,60,60);
 
     }
 }

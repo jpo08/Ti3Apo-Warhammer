@@ -25,22 +25,50 @@ public class HelloController implements Initializable {
     private GraphicsContext gc;
 
     private Image background;
+    private ArrayList<Level> levels;
+    private int currentLevel=0;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         gc = canvas.getGraphicsContext2D();
         canvas.setFocusTraversable(true);
         canvas.setOnKeyPressed(this::onKeyPressed);
-        String uriBack ="file:"+ HelloApplication.class.getResource("fondoLv1.png").getPath();
-        background=new Image(uriBack);
         canvas.setOnKeyReleased(this::onKeyReleased);
         canvas.setOnMousePressed(this::onMousePressed);
         canvas.setOnMouseMoved(this::onMouseMoved);
         avatar = new Avatar();
+        levels=new ArrayList<>();
+
+
+
+        //generar mapa level 1
+        Level l1 = new Level(0);
+        String uriBack ="file:"+ HelloApplication.class.getResource("fondoLv1.png").getPath();
+        background=new Image(uriBack);
         ammoBox.add(new AmmoBox(canvas));
         portal = new Portal(canvas);
-        enemies.add(new Enemy(new Vector(400,100)));
-        enemies.add(new Enemy(new Vector(400,300)));
+        Enemy e = new Enemy(new Vector(400,100));
+        new Thread(e).start();
+        l1.getEnemies().add(e);
+        l1.getEnemies().add(new Enemy(new Vector(400,300)));
+        levels.add(l1);
+
+        //generar segundo mapa
+        Level l2 = new Level(1);
+        l2.setColor(Color.GRAY);
+        l2.getEnemies().add(new Enemy(new Vector(100,100)));
+        l2.getEnemies().add(new Enemy(new Vector(100,300)));
+        l2.getEnemies().add(new Enemy(new Vector(300,300)));
+        levels.add(l2);
+
+        //generar tercer mapa
+        Level l3 = new Level(2);
+        l3.setColor(Color.GRAY);
+        l3.getEnemies().add(new Enemy(new Vector(100,100)));
+        l3.getEnemies().add(new Enemy(new Vector(100,300)));
+        l3.getEnemies().add(new Enemy(new Vector(300,400)));
+        levels.add(l3);
+
         draw();
     }
 
@@ -76,13 +104,13 @@ public class HelloController implements Initializable {
                 diff2.normalize();
                 diff2.setMag(4);
 
-                bullets.add(
+                levels.get(currentLevel).getBullets().add(
                         new Bullet(new Vector(avatar.pos.getX(),avatar.pos.getY()),diff )
                 );
-                bullets.add(
+                levels.get(currentLevel).getBullets().add(
                         new Bullet(new Vector(avatar.pos.getX(),avatar.pos.getY()),diff1 )
                 );
-                bullets.add(
+                levels.get(currentLevel).getBullets().add(
                         new Bullet(new Vector(avatar.pos.getX(),avatar.pos.getY()),diff2 )
                 );
                 avatar.setAmmo(avatar.getAmmo()-5);
@@ -93,7 +121,7 @@ public class HelloController implements Initializable {
                 diff.normalize();
                 diff.setMag(4);
 
-                bullets.add(
+                levels.get(currentLevel).getBullets().add(
                         new Bullet(new Vector(avatar.pos.getX(),avatar.pos.getY()),diff )
                 );
                 avatar.setAmmo(avatar.getAmmo()-1);
@@ -122,9 +150,6 @@ public class HelloController implements Initializable {
 
 
     private Avatar avatar;
-    private ArrayList<Bullet> bullets=new ArrayList<>();
-
-    private ArrayList<Enemy> enemies = new ArrayList<>();
 
     private Puntero puntero;
     private Weapon gun1;
@@ -161,41 +186,48 @@ public class HelloController implements Initializable {
         //
         Thread ae = new Thread(()->{
             while(isAlive){
+                Level level=  levels.get(currentLevel);
                 //Dibujar en el lienzo
                 Platform.runLater(()->{//Runnable
+                    //Lo que hagamos aqui, corre en el main thread
                     gc.save();
                     gc.drawImage(background, 0, 0, canvas.getWidth(), canvas.getHeight());
                     gc.restore();
-                    //Lo que hagamos aqui, corre en el main thread
-                    detectColission();
+
                     for (int i=0;i<ammoBox.size();i++){
                         ammoBox.get(i).draw(gc,true);
                     }
+                    if (level.getEnemies().size()<1){
+                        portal.draw(gc,true);
+                        detectPortalColision(level);
+                    }
+
 
                    if (avatar.isArmed()){
                        gun1.draw(gc,true);
                    }
                     puntero.draw(gc,true);
+
                     if (Wpressed==true||Apressed==true||Dpressed==true||Spressed==true){
                         avatar.draw(gc,true);
                     }else {
                         avatar.draw(gc,false);
                     }
-                    for (int i = 0; i<bullets.size();i++){
-                        bullets.get(i).draw(gc,true);
-                        if (isOutside(bullets.get(i).pos.getX(),bullets.get(i).pos.getY())){
-                            bullets.remove(i);
+                    for (int i = 0; i<level.getBullets().size();i++){
+                        level.getBullets().get(i).draw(gc,true);
+                        if (isOutside(level.getBullets().get(i).pos.getX(),level.getBullets().get(i).pos.getY())){
+                            level.getBullets().remove(i);
                         }
                     }
-                    for (int i= 0; i<enemies.size();i++){
-                        enemies.get(i).draw(gc,true);
+                    for (int i= 0; i<level.getEnemies().size();i++){
+                        level.getEnemies().get(i).draw(gc,true);
                     }
 
                 });
 
                 //colisiones
 
-                detectColission();
+                detectColission(level);
                 if (avatar.isArmed()==false){
                     double distanceBox=Math.sqrt(
                             Math.pow(avatar.pos.getX()-ammoBox.get(0).pos.getX(),2)+ Math.pow(avatar.pos.getY()-ammoBox.get(0).pos.getY(),2)
@@ -207,7 +239,26 @@ public class HelloController implements Initializable {
                     }
                 }
 
+
+
+
                 //Calculos geometricos
+
+                //Paredes
+                if (avatar.pos.getX()>canvas.getWidth()-20){
+                    avatar.pos.setX(canvas.getWidth()-20);
+                }
+
+                if (avatar.pos.getX()<25){
+                    avatar.pos.setX(25);
+                }
+                if (avatar.pos.getY()>canvas.getHeight()-25){
+                    avatar.pos.setY(canvas.getHeight()-25);
+                }
+
+                if (avatar.pos.getY()<28){
+                    avatar.pos.setY(28);
+                }
 
 
 
@@ -249,22 +300,45 @@ public class HelloController implements Initializable {
         return x<-15 || y<-15 || x>canvas.getWidth() || y>canvas.getHeight();
     }
 
+    public void detectPortalColision(Level level){
+        if (level.getEnemies().size()<1){
+            double distancePortal=Math.sqrt(
+                    Math.pow(avatar.pos.getX()-portal.pos.getX(),2)+ Math.pow(avatar.pos.getY()-portal.pos.getY(),2)
+            );
+            if (distancePortal<25){
+                if (currentLevel<2){
+                    currentLevel=currentLevel+1;
+                    avatar.pos.setX(canvas.getWidth()/2);
+                    avatar.pos.setY(canvas.getHeight()/2);
+                }else {
+                    //completo el juego
+                }
 
-    public void detectColission(){
-        for (int i=0; i<bullets.size();i++){
-            Bullet bn = bullets.get(i);
-            for (int j = 0; j<enemies.size();j++){
-                Enemy en = enemies.get(j);
+
+            }
+        }
+
+    }
+
+
+
+
+    public void detectColission(Level level){
+        for (int i=0; i<level.getBullets().size();i++){
+            Bullet bn = level.getBullets().get(i);
+            for (int j = 0; j<level.getEnemies().size();j++){
+                Enemy en = level.getEnemies().get(j);
 
                 double distance=Math.sqrt(
                         Math.pow(en.pos.getX()-bn.pos.getX(),2)+ Math.pow(en.pos.getY()-bn.pos.getY(),2)
                 );
 
                 if (distance<25){
-                    bullets.remove(i);
+                    level.getBullets().remove(i);
                     en.setnLifes(en.getnLifes()-1);
                     if (en.getnLifes() == 0){
-                        enemies.remove(j);
+                        level.getEnemies().remove(j);
+
                     }
 
                 }
