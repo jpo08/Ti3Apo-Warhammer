@@ -319,6 +319,7 @@ public class HelloController implements Initializable {
                     avatar.pos.setY(canvas.getHeight()/2);
                 }else {
                     //completo el juego
+                    isAlive=false;
                    victoryMessage();
                 }
 
