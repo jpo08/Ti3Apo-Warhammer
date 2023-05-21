@@ -78,7 +78,7 @@ public class HelloController implements Initializable {
         double yM = e.getY();
         puntero=new Puntero(new Vector(xM,yM));
         avatar.setPuntero(puntero);
-        gun1=new Weapon(avatar.pos,1);
+        gun1=new Weapon(avatar.pos,avatar.getSecondWeapon());
         gun1.setPuntero(puntero);
 
 

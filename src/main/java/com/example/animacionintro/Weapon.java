@@ -18,6 +18,7 @@ public class Weapon extends Drawing {
         String uri = "file:"+ HelloApplication.class.getResource("gun 1.png").getPath();
         String uriL = "file:"+ HelloApplication.class.getResource("gun 1L.png").getPath();
         String uri2 = "file:"+ HelloApplication.class.getResource("gun 2.png").getPath();
+        String uri2L = "file:"+ HelloApplication.class.getResource("gun 2L.png").getPath();
         this.pos=pos;
         direction = new Vector(1,1);
         if (type==1){
@@ -25,6 +26,7 @@ public class Weapon extends Drawing {
             spriteL=new Image(uriL);
         }else {
             sprite=new Image(uri2);
+            spriteL= new Image(uri2L);
         }
 
 
