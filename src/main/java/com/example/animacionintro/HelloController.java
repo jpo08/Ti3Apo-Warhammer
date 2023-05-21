@@ -25,7 +25,7 @@ public class HelloController implements Initializable {
     private Canvas canvas;
     private GraphicsContext gc;
 
-    private Image background;
+
     private ArrayList<Level> levels;
     private int currentLevel=0;
 
@@ -44,8 +44,7 @@ public class HelloController implements Initializable {
 
         //generar mapa level 1
         Level l1 = new Level(0);
-        String uriBack ="file:"+ HelloApplication.class.getResource("fondoLv1.png").getPath();
-        background=new Image(uriBack);
+
         ammoBox.add(new AmmoBox(canvas));
         portal = new Portal(canvas);
         Enemy e = new Enemy(new Vector(400,100));
@@ -192,7 +191,7 @@ public class HelloController implements Initializable {
                 Platform.runLater(()->{//Runnable
                     //Lo que hagamos aqui, corre en el main thread
                     gc.save();
-                    gc.drawImage(background, 0, 0, canvas.getWidth(), canvas.getHeight());
+                    gc.drawImage(level.getFondo(), 0, 0, canvas.getWidth(), canvas.getHeight());
                     gc.restore();
 
                     for (int i=0;i<ammoBox.size();i++){

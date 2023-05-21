@@ -1,5 +1,6 @@
 package com.example.animacionintro;
 
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
@@ -11,12 +12,33 @@ public class Level {
     private ArrayList<Enemy> enemies;
     private ArrayList<Bullet> bullets;
     private Portal portal;
+    private Image fondo;
 
     public Level(int id){
         this.id =id;
         enemies=new ArrayList<>();
         bullets=new ArrayList<>();
+        if (id==0){
+            String uriBack ="file:"+ HelloApplication.class.getResource("fondoLv1.png").getPath();
+            fondo=new Image(uriBack);
 
+        }else if (id==1){
+            String uriBack ="file:"+ HelloApplication.class.getResource("fondoLv2.png").getPath();
+            fondo=new Image(uriBack);
+
+        }else{
+            String uriBack ="file:"+ HelloApplication.class.getResource("fondoLv3.png").getPath();
+            fondo=new Image(uriBack);
+        }
+
+    }
+
+    public Image getFondo() {
+        return fondo;
+    }
+
+    public void setFondo(Image fondo) {
+        this.fondo = fondo;
     }
 
     public int getId() {
