@@ -17,6 +17,7 @@ public class Avatar extends Drawing{
     boolean armed;
 
     private int secondWeapon;
+    private int vida;
 
 
 
@@ -36,6 +37,7 @@ public class Avatar extends Drawing{
         pos.setY(100);
         ammo=5;
         secondWeapon=1;
+        vida=3;
     }
 
     public void setPuntero(Puntero puntero) {
@@ -64,6 +66,14 @@ public class Avatar extends Drawing{
 
     public void setSecondWeapon(int secondWeapon) {
         this.secondWeapon = secondWeapon;
+    }
+
+    public int getVida() {
+        return vida;
+    }
+
+    public void setVida(int vida) {
+        this.vida = vida;
     }
 
     @Override
