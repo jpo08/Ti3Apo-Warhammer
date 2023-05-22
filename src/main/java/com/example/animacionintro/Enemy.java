@@ -36,6 +36,8 @@ public class Enemy extends Drawing implements Runnable{
             pos.setY(pos.getY()+deltaY);
             pos.setX(pos.getX()+deltaX);
             move();
+
+
             try {
                 Thread.sleep(100);
             }catch (InterruptedException e){
@@ -66,6 +68,19 @@ public class Enemy extends Drawing implements Runnable{
 
         if(player.pos.getY()-pos.getY()>0) pos.setY(pos.getY()+1);
         else if(player.pos.getY()-pos.getY()<0) pos.setY(pos.getY()-1);
+    }
+
+    public Bullet shoot(){
+        double diffx = player.pos.getX()-pos.getX();;
+        double diffy = player.pos.getY()-pos.getY();
+        Vector diff = new Vector(diffx,diffy);
+        diff.normalize();
+        diff.setMag(4);
+
+        Bullet bullet = new Bullet( new Vector(pos.getX(), pos.getY() ),diff);
+
+        return bullet;
+
     }
 
 }

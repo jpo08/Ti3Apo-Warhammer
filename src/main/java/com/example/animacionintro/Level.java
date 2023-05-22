@@ -11,12 +11,14 @@ public class Level {
 
     private ArrayList<Enemy> enemies;
     private ArrayList<Bullet> bullets;
+    private ArrayList<Bullet> enemyBullets;
     private Portal portal;
     private Image fondo;
 
     public Level(int id){
         this.id =id;
         enemies=new ArrayList<>();
+        enemyBullets=new ArrayList<>();
         bullets=new ArrayList<>();
         if (id==0){
             String uriBack ="file:"+ HelloApplication.class.getResource("fondoLv1.png").getPath();
@@ -71,5 +73,13 @@ public class Level {
 
     public void setBullets(ArrayList<Bullet> bullets) {
         this.bullets = bullets;
+    }
+
+    public ArrayList<Bullet> getEnemyBullets() {
+        return enemyBullets;
+    }
+
+    public void setEnemyBullets(ArrayList<Bullet> enemyBullets) {
+        this.enemyBullets = enemyBullets;
     }
 }

@@ -24,19 +24,13 @@ public class HelloController implements Initializable {
 
     @FXML
     private Label bulletsNoLB;
-
     @FXML
     private ImageView gunIconIV;
-
     @FXML
     private Label livesNoLB;
-
-
     @FXML
     private Canvas canvas;
     private GraphicsContext gc;
-
-
     private ArrayList<Level> levels;
     private int currentLevel=0;
     Random random = new Random();
@@ -56,12 +50,8 @@ public class HelloController implements Initializable {
         levels=new ArrayList<>();
         livesNoLB.setText(avatar.getVida()+"");
 
-
-
-
         //generar mapa level 1
         Level l1 = new Level(0);
-
         ammoBox.add(new AmmoBox(canvas));
         portal = new Portal(canvas);
         for (int i=0;i<numberEnemysLV1;i++){
@@ -130,6 +120,7 @@ public class HelloController implements Initializable {
         levels.add(l3);
 
         draw();
+        enemyshoot(levels.get(currentLevel));
     }
     private String getBulletsText(){
         gunIconIV.setImage(gun1.getSprite());
@@ -143,11 +134,6 @@ public class HelloController implements Initializable {
         avatar.setPuntero(puntero);
         gun1=new Weapon(avatar.pos,avatar.getSecondWeapon());
         gun1.setPuntero(puntero);
-
-
-
-
-
     }
 
     private void onMousePressed(MouseEvent e) {
@@ -195,18 +181,11 @@ public class HelloController implements Initializable {
         }
 
     }
-
     private void ammoBoxColission(){
-
         avatar.setArmed(true);
-
-
-
     }
 
-
     private boolean isAlive = true;
-
     private boolean Apressed = false;
     private boolean Wpressed = false;
     private boolean Spressed = false;
@@ -259,6 +238,7 @@ public class HelloController implements Initializable {
                     gc.save();
                     gc.drawImage(level.getFondo(), 0, 0, canvas.getWidth(), canvas.getHeight());
                     gc.restore();
+                    detectColission2(level);
 
                     for (int i=0;i<ammoBox.size();i++){
                         ammoBox.get(i).draw(gc,true);
@@ -266,6 +246,7 @@ public class HelloController implements Initializable {
                     if (level.getEnemies().size()<1){
                         portal.draw(gc,true);
                         detectPortalColision(level);
+
                     }
 
 
@@ -290,12 +271,19 @@ public class HelloController implements Initializable {
                     for (int i= 0; i<level.getEnemies().size();i++){
                         level.getEnemies().get(i).draw(gc,true);
                     }
+                    for (int i = 0; i<level.getEnemyBullets().size();i++){
+                        level.getEnemyBullets().get(i).draw(gc,true);
+                        if (isOutside(level.getEnemyBullets().get(i).pos.getX(),level.getEnemyBullets().get(i).pos.getY())){
+                            level.getEnemyBullets().remove(i);
+                        }
+                    }
 
                 });
 
                 //colisiones
 
                 detectColission(level);
+
                 if (avatar.isArmed()==false){
                     double distanceBox=Math.sqrt(
                             Math.pow(avatar.pos.getX()-ammoBox.get(0).pos.getX(),2)+ Math.pow(avatar.pos.getY()-ammoBox.get(0).pos.getY(),2)
@@ -307,28 +295,21 @@ public class HelloController implements Initializable {
                     }
                 }
 
-
-
-
                 //Calculos geometricos
 
                 //Paredes
                 if (avatar.pos.getX()>canvas.getWidth()-20){
                     avatar.pos.setX(canvas.getWidth()-20);
                 }
-
                 if (avatar.pos.getX()<25){
                     avatar.pos.setX(25);
                 }
                 if (avatar.pos.getY()>canvas.getHeight()-25){
                     avatar.pos.setY(canvas.getHeight()-25);
                 }
-
                 if (avatar.pos.getY()<28){
                     avatar.pos.setY(28);
                 }
-
-
 
 
                 if(Wpressed){
@@ -355,13 +336,28 @@ public class HelloController implements Initializable {
                     avatar.setAmmo(5);
                 }
 
-
                 try {
                     Thread.sleep(16);
                 } catch (InterruptedException e) {e.printStackTrace();}
             }
         });
         ae.start();
+    }
+
+    public void enemyshoot(Level level){
+        Thread enemy = new Thread(()->{
+            while (isAlive){
+            for (int i=0;i<level.getEnemies().size();i++){
+
+                level.getEnemyBullets().add(level.getEnemies().get(i).shoot());
+            }
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {e.printStackTrace();}
+            }
+        });
+        enemy.start();
+
     }
 
     public boolean isOutside(double x, double y){
@@ -382,8 +378,9 @@ public class HelloController implements Initializable {
             if (distancePortal<25){
                 if (currentLevel<2){
                     currentLevel=currentLevel+1;
-                    avatar.pos.setX(canvas.getWidth()/2);
-                    avatar.pos.setY(canvas.getHeight()/2);
+                    avatar.pos.setX(100);
+                    avatar.pos.setY(100);
+                    enemyshoot(levels.get(currentLevel));
                 }else {
                     //completo el juego
                     isAlive=false;
@@ -395,9 +392,6 @@ public class HelloController implements Initializable {
         }
 
     }
-
-
-
 
     public void detectColission(Level level){
         for (int i=0; i<level.getBullets().size();i++){
@@ -419,6 +413,32 @@ public class HelloController implements Initializable {
 
                 }
             }
+        }
+
+    }
+
+    public void lossMessage(){
+        HelloApplication.openWindow("defeated-view.fxml");
+        Stage stage = (Stage) canvas.getScene().getWindow();
+        stage.close();
+    }
+    public void detectColission2(Level level){
+        for (int i=0; i<level.getEnemyBullets().size();i++){
+            Bullet bn = level.getEnemyBullets().get(i);
+
+                double distance=Math.sqrt(
+                        Math.pow(avatar.pos.getX()-bn.pos.getX(),2)+ Math.pow(avatar.pos.getY()-bn.pos.getY(),2)
+                );
+
+                if (distance<25){
+                    level.getEnemyBullets().remove(i);
+                    avatar.setVida(avatar.getVida()-1);
+                    if (avatar.getVida() == 0){
+                        lossMessage();
+
+                    }
+
+                }
         }
 
     }
