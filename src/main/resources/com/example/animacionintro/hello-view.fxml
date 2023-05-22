@@ -7,24 +7,24 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.animacionintro.HelloController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="494.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.animacionintro.HelloController">
    <children>
-      <Canvas fx:id="canvas" height="400.0" width="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-      <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+      <Canvas fx:id="canvas" height="434.0" layoutY="61.0" width="600.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="61.0" />
+      <ImageView fitHeight="63.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@gui.png" />
+            <Image url="@gui2.png" />
          </image>
       </ImageView>
-      <Label fx:id="bulletsNoLB" layoutX="156.0" layoutY="37.0" prefHeight="13.0" prefWidth="12.0" text="0" textAlignment="CENTER" textFill="WHITE">
+      <ImageView fx:id="gunIconIV" fitHeight="40.0" fitWidth="96.0" layoutX="42.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" />
+      <Label fx:id="livesNoLB" layoutX="534.0" layoutY="14.0" text="3" textFill="WHITE">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>
       </Label>
-      <Label fx:id="livesNoLB" layoutX="156.0" layoutY="6.0" text="3" textFill="WHITE">
+      <Label fx:id="bulletsNoLB" layoutX="233.0" layoutY="14.0" prefHeight="13.0" prefWidth="12.0" text="0" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>
       </Label>
-      <ImageView fx:id="gunIconIV" fitHeight="52.0" fitWidth="101.0" layoutX="7.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true" />
    </children>
 </AnchorPane>

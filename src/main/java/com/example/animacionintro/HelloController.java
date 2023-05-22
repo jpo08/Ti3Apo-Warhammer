@@ -239,6 +239,7 @@ public class HelloController implements Initializable {
                     gc.drawImage(level.getFondo(), 0, 0, canvas.getWidth(), canvas.getHeight());
                     gc.restore();
                     detectColission2(level);
+                    livesNoLB.setText(avatar.getVida()+"");
 
                     for (int i=0;i<ammoBox.size();i++){
                         ammoBox.get(i).draw(gc,true);
@@ -347,12 +348,15 @@ public class HelloController implements Initializable {
     public void enemyshoot(Level level){
         Thread enemy = new Thread(()->{
             while (isAlive){
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {e.printStackTrace();}
             for (int i=0;i<level.getEnemies().size();i++){
 
                 level.getEnemyBullets().add(level.getEnemies().get(i).shoot());
             }
             try {
-                Thread.sleep(2000);
+                Thread.sleep(4000);
             } catch (InterruptedException e) {e.printStackTrace();}
             }
         });
