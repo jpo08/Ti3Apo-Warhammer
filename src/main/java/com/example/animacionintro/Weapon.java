@@ -34,6 +34,10 @@ public class Weapon extends Drawing {
 
     }
 
+    public Image getSprite() {
+        return sprite;
+    }
+
     public void setPuntero(Puntero puntero) {
         this.puntero = puntero;
     }

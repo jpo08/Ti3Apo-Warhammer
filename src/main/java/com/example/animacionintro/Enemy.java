@@ -11,12 +11,14 @@ public class Enemy extends Drawing implements Runnable{
     private int nLifes;
 
     private boolean isDead;
+    private Avatar player;
 
-    public Enemy(Vector pos){
+    public Enemy(Vector pos, Avatar player){
         String uri = "file:"+ HelloApplication.class.getResource("alien.gif").getPath();
         this.pos=pos;
         sprite=new Image(uri);
         nLifes=3;
+        this.player = player;
     }
     @Override
     public void draw(GraphicsContext gc,boolean m) {
@@ -33,6 +35,7 @@ public class Enemy extends Drawing implements Runnable{
 
             pos.setY(pos.getY()+deltaY);
             pos.setX(pos.getX()+deltaX);
+            move();
             try {
                 Thread.sleep(100);
             }catch (InterruptedException e){
@@ -56,4 +59,13 @@ public class Enemy extends Drawing implements Runnable{
     public void setDead(boolean dead) {
         isDead = dead;
     }
+
+    public void move(){
+        if(player.pos.getX()-pos.getX()>0) pos.setX(pos.getX()+1);
+        else if(player.pos.getX()-pos.getX()<0) pos.setX(pos.getX()-1);
+
+        if(player.pos.getY()-pos.getY()>0) pos.setY(pos.getY()+1);
+        else if(player.pos.getY()-pos.getY()<0) pos.setY(pos.getY()-1);
+    }
+
 }

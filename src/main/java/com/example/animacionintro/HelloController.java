@@ -8,6 +8,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -16,9 +17,19 @@ import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 public class HelloController implements Initializable {
+
+    @FXML
+    private Label bulletsNoLB;
+
+    @FXML
+    private ImageView gunIconIV;
+
+    @FXML
+    private Label livesNoLB;
 
 
     @FXML
@@ -28,6 +39,10 @@ public class HelloController implements Initializable {
 
     private ArrayList<Level> levels;
     private int currentLevel=0;
+    Random random = new Random();
+    private int numberEnemysLV1= random.nextInt(4)+3;
+    private int numberEnemysLV2= random.nextInt(4)+3;
+    private int numberEnemysLV3= random.nextInt(4)+3;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -39,6 +54,8 @@ public class HelloController implements Initializable {
         canvas.setOnMouseMoved(this::onMouseMoved);
         avatar = new Avatar();
         levels=new ArrayList<>();
+        livesNoLB.setText(avatar.getVida()+"");
+
 
 
 
@@ -47,29 +64,76 @@ public class HelloController implements Initializable {
 
         ammoBox.add(new AmmoBox(canvas));
         portal = new Portal(canvas);
-        Enemy e = new Enemy(new Vector(400,100));
-        new Thread(e).start();
-        l1.getEnemies().add(e);
-        l1.getEnemies().add(new Enemy(new Vector(400,300)));
+        for (int i=0;i<numberEnemysLV1;i++){
+            int posicion= random.nextInt(3);
+            if (posicion==1){
+                Enemy e = new Enemy(new Vector(random.nextInt(300)+300,random.nextInt(200)),avatar);
+                new Thread(e).start();
+                l1.getEnemies().add(e);
+            }else if (posicion==2){
+                Enemy e = new Enemy(new Vector(random.nextInt(300),random.nextInt(200)+200),avatar);
+                new Thread(e).start();
+                l1.getEnemies().add(e);
+            }else {
+                Enemy e = new Enemy(new Vector(random.nextInt(300)+300,random.nextInt(200)+200),avatar);
+                new Thread(e).start();
+                l1.getEnemies().add(e);
+            }
+
+        }
         levels.add(l1);
 
         //generar segundo mapa
         Level l2 = new Level(1);
         l2.setColor(Color.GRAY);
-        l2.getEnemies().add(new Enemy(new Vector(100,100)));
-        l2.getEnemies().add(new Enemy(new Vector(100,300)));
-        l2.getEnemies().add(new Enemy(new Vector(300,300)));
+
+        for (int i=0;i<numberEnemysLV2;i++){
+            int posicion= random.nextInt(3);
+            if (posicion==1){
+                Enemy e = new Enemy(new Vector(random.nextInt(300)+300,random.nextInt(200)),avatar);
+                new Thread(e).start();
+                l2.getEnemies().add(e);
+            }else if (posicion==2){
+                Enemy e = new Enemy(new Vector(random.nextInt(300),random.nextInt(200)+200),avatar);
+                new Thread(e).start();
+                l2.getEnemies().add(e);
+            }else {
+                Enemy e = new Enemy(new Vector(random.nextInt(300)+300,random.nextInt(200)+200),avatar);
+                new Thread(e).start();
+                l2.getEnemies().add(e);
+            }
+
+        }
         levels.add(l2);
 
         //generar tercer mapa
         Level l3 = new Level(2);
         l3.setColor(Color.GRAY);
-        l3.getEnemies().add(new Enemy(new Vector(100,100)));
-        l3.getEnemies().add(new Enemy(new Vector(100,300)));
-        l3.getEnemies().add(new Enemy(new Vector(300,400)));
+
+        for (int i=0;i<numberEnemysLV3;i++){
+            int posicion= random.nextInt(3);
+            if (posicion==1){
+                Enemy e = new Enemy(new Vector(random.nextInt(300)+300,random.nextInt(200)),avatar);
+                new Thread(e).start();
+                l3.getEnemies().add(e);
+            }else if (posicion==2){
+                Enemy e = new Enemy(new Vector(random.nextInt(300),random.nextInt(200)+200),avatar);
+                new Thread(e).start();
+                l3.getEnemies().add(e);
+            }else {
+                Enemy e = new Enemy(new Vector(random.nextInt(300)+300,random.nextInt(200)+200),avatar);
+                new Thread(e).start();
+                l3.getEnemies().add(e);
+            }
+
+        }
         levels.add(l3);
 
         draw();
+    }
+    private String getBulletsText(){
+        gunIconIV.setImage(gun1.getSprite());
+        return avatar.getAmmo()+"";
     }
 
     private void onMouseMoved(MouseEvent e){
@@ -114,6 +178,7 @@ public class HelloController implements Initializable {
                         new Bullet(new Vector(avatar.pos.getX(),avatar.pos.getY()),diff2 )
                 );
                 avatar.setAmmo(avatar.getAmmo()-5);
+
             }else if (avatar.getSecondWeapon()==1){
                 double diffx = e.getX()-avatar.pos.getX();
                 double diffy = e.getY()-avatar.pos.getY();
@@ -134,6 +199,7 @@ public class HelloController implements Initializable {
     private void ammoBoxColission(){
 
         avatar.setArmed(true);
+
 
 
     }
@@ -204,9 +270,11 @@ public class HelloController implements Initializable {
 
 
                    if (avatar.isArmed()){
+                       bulletsNoLB.setText(getBulletsText());
                        gun1.draw(gc,true);
                    }
                     puntero.draw(gc,true);
+
 
                     if (Wpressed==true||Apressed==true||Dpressed==true||Spressed==true){
                         avatar.draw(gc,true);
