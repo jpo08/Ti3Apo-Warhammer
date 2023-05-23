@@ -2,7 +2,6 @@ package com.example.animacionintro;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 
 public class Avatar extends Drawing{
 
@@ -18,6 +17,7 @@ public class Avatar extends Drawing{
 
     private int secondWeapon;
     private int vida;
+    private DeadAnimation deadAnimation;
 
 
 
@@ -38,6 +38,7 @@ public class Avatar extends Drawing{
         ammo=5;
         secondWeapon=1;
         vida=3;
+        deadAnimation=new DeadAnimation(1,pos);
     }
 
     public void setPuntero(Puntero puntero) {
@@ -74,6 +75,10 @@ public class Avatar extends Drawing{
 
     public void setVida(int vida) {
         this.vida = vida;
+    }
+
+    public DeadAnimation getDeadAnimation() {
+        return deadAnimation;
     }
 
     @Override

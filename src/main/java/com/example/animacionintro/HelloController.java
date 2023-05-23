@@ -57,15 +57,15 @@ public class HelloController implements Initializable {
         for (int i=0;i<numberEnemysLV1;i++){
             int posicion= random.nextInt(3);
             if (posicion==1){
-                Enemy e = new Enemy(new Vector(random.nextInt(300)+300,random.nextInt(200)),avatar);
+                Enemy e = new Enemy(new Vector(random.nextInt(300)+300,random.nextInt(200)),avatar,2);
                 new Thread(e).start();
                 l1.getEnemies().add(e);
             }else if (posicion==2){
-                Enemy e = new Enemy(new Vector(random.nextInt(300),random.nextInt(200)+200),avatar);
+                Enemy e = new Enemy(new Vector(random.nextInt(300),random.nextInt(200)+200),avatar,2);
                 new Thread(e).start();
                 l1.getEnemies().add(e);
             }else {
-                Enemy e = new Enemy(new Vector(random.nextInt(300)+300,random.nextInt(200)+200),avatar);
+                Enemy e = new Enemy(new Vector(random.nextInt(300)+300,random.nextInt(200)+200),avatar,2);
                 new Thread(e).start();
                 l1.getEnemies().add(e);
             }
@@ -80,15 +80,15 @@ public class HelloController implements Initializable {
         for (int i=0;i<numberEnemysLV2;i++){
             int posicion= random.nextInt(3);
             if (posicion==1){
-                Enemy e = new Enemy(new Vector(random.nextInt(300)+300,random.nextInt(200)),avatar);
+                Enemy e = new Enemy(new Vector(random.nextInt(300)+300,random.nextInt(200)),avatar,2);
                 new Thread(e).start();
                 l2.getEnemies().add(e);
             }else if (posicion==2){
-                Enemy e = new Enemy(new Vector(random.nextInt(300),random.nextInt(200)+200),avatar);
+                Enemy e = new Enemy(new Vector(random.nextInt(300),random.nextInt(200)+200),avatar,2);
                 new Thread(e).start();
                 l2.getEnemies().add(e);
             }else {
-                Enemy e = new Enemy(new Vector(random.nextInt(300)+300,random.nextInt(200)+200),avatar);
+                Enemy e = new Enemy(new Vector(random.nextInt(300)+300,random.nextInt(200)+200),avatar,2);
                 new Thread(e).start();
                 l2.getEnemies().add(e);
             }
@@ -103,20 +103,24 @@ public class HelloController implements Initializable {
         for (int i=0;i<numberEnemysLV3;i++){
             int posicion= random.nextInt(3);
             if (posicion==1){
-                Enemy e = new Enemy(new Vector(random.nextInt(300)+300,random.nextInt(200)),avatar);
+                Enemy e = new Enemy(new Vector(random.nextInt(275)+300,random.nextInt(200)+25),avatar,2);
                 new Thread(e).start();
                 l3.getEnemies().add(e);
             }else if (posicion==2){
-                Enemy e = new Enemy(new Vector(random.nextInt(300),random.nextInt(200)+200),avatar);
+                Enemy e = new Enemy(new Vector(random.nextInt(300)+25,random.nextInt(175)+200),avatar,2);
                 new Thread(e).start();
                 l3.getEnemies().add(e);
             }else {
-                Enemy e = new Enemy(new Vector(random.nextInt(300)+300,random.nextInt(200)+200),avatar);
+                Enemy e = new Enemy(new Vector(random.nextInt(275)+300,random.nextInt(175)+200),avatar,2);
                 new Thread(e).start();
                 l3.getEnemies().add(e);
             }
 
+
         }
+        Enemy a = new Enemy(new Vector(canvas.getWidth()/2,canvas.getHeight()/2),avatar,1);
+        new Thread(a).start();
+        l3.getEnemies().add(a);
         levels.add(l3);
 
         draw();
@@ -278,6 +282,10 @@ public class HelloController implements Initializable {
                             level.getEnemyBullets().remove(i);
                         }
                     }
+                    if (avatar.getVida()==0){
+                        avatar.getDeadAnimation().draw(gc,true);
+                    }
+
 
                 });
 
@@ -352,8 +360,26 @@ public class HelloController implements Initializable {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {e.printStackTrace();}
             for (int i=0;i<level.getEnemies().size();i++){
+                if (level.getEnemies().get(i).getType()==2){
+                    level.getEnemyBullets().add(level.getEnemies().get(i).shoot());
+                }else {
+                    for (int j=1;j<8;j++){
+                        double angle = j * 45;
+                        Vector diff = new Vector(level.getEnemies().get(i).pos.getX(),level.getEnemies().get(i).pos.getY());
 
-                level.getEnemyBullets().add(level.getEnemies().get(i).shoot());
+                        diff.setX(1*Math.cos(angle));
+                        diff.setY(1*Math.sin(angle));
+
+
+
+                        level.getEnemyBullets().add(
+                                new Bullet(new Vector(
+                                        level.getEnemies().get(i).pos.getX(),level.getEnemies().get(i).pos.getY()),diff
+                                )
+                        );
+                    }
+                }
+
             }
             try {
                 Thread.sleep(4000);
@@ -438,6 +464,8 @@ public class HelloController implements Initializable {
                     level.getEnemyBullets().remove(i);
                     avatar.setVida(avatar.getVida()-1);
                     if (avatar.getVida() == 0){
+
+                        isAlive=false;
                         lossMessage();
 
                     }
