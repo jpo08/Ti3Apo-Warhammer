@@ -19,8 +19,14 @@ public class Enemy extends Drawing implements Runnable{
             String uri = "file:"+ HelloApplication.class.getResource("magine.gif").getPath();
             sprite=new Image(uri);
             nLifes=10;
-        }else{
+        }
+        if (type==2){
             String uri = "file:"+ HelloApplication.class.getResource("alien.gif").getPath();
+            sprite=new Image(uri);
+            nLifes=3;
+        }
+        if (type==3){
+            String uri = "file:"+ HelloApplication.class.getResource("alien 2.gif").getPath();
             sprite=new Image(uri);
             nLifes=3;
         }
@@ -30,9 +36,13 @@ public class Enemy extends Drawing implements Runnable{
     }
     @Override
     public void draw(GraphicsContext gc,boolean m) {
-        if (type==2){
+        if (type==2 ){
             gc.drawImage(sprite,pos.getX()-25, pos.getY()-25, 50,50);
-        }else {
+        }
+        if (type==3){
+            gc.drawImage(sprite,pos.getX()-35, pos.getY()-25, 70,50);
+        }
+        if (type==1){
             gc.drawImage(sprite,pos.getX()-75, pos.getY()-45, 150,90);
         }
 

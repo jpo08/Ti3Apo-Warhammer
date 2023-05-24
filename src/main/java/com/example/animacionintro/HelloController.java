@@ -77,50 +77,11 @@ public class HelloController implements Initializable {
         Level l2 = new Level(1);
         l2.setColor(Color.GRAY);
 
-        for (int i=0;i<numberEnemysLV2;i++){
-            int posicion= random.nextInt(3);
-            if (posicion==1){
-                Enemy e = new Enemy(new Vector(random.nextInt(300)+300,random.nextInt(200)),avatar,2);
-                new Thread(e).start();
-                l2.getEnemies().add(e);
-            }else if (posicion==2){
-                Enemy e = new Enemy(new Vector(random.nextInt(300),random.nextInt(200)+200),avatar,2);
-                new Thread(e).start();
-                l2.getEnemies().add(e);
-            }else {
-                Enemy e = new Enemy(new Vector(random.nextInt(300)+300,random.nextInt(200)+200),avatar,2);
-                new Thread(e).start();
-                l2.getEnemies().add(e);
-            }
-
-        }
         levels.add(l2);
 
         //generar tercer mapa
         Level l3 = new Level(2);
         l3.setColor(Color.GRAY);
-
-        for (int i=0;i<numberEnemysLV3;i++){
-            int posicion= random.nextInt(3);
-            if (posicion==1){
-                Enemy e = new Enemy(new Vector(random.nextInt(275)+300,random.nextInt(200)+25),avatar,2);
-                new Thread(e).start();
-                l3.getEnemies().add(e);
-            }else if (posicion==2){
-                Enemy e = new Enemy(new Vector(random.nextInt(300)+25,random.nextInt(175)+200),avatar,2);
-                new Thread(e).start();
-                l3.getEnemies().add(e);
-            }else {
-                Enemy e = new Enemy(new Vector(random.nextInt(275)+300,random.nextInt(175)+200),avatar,2);
-                new Thread(e).start();
-                l3.getEnemies().add(e);
-            }
-
-
-        }
-        Enemy a = new Enemy(new Vector(canvas.getWidth()/2,canvas.getHeight()/2),avatar,1);
-        new Thread(a).start();
-        l3.getEnemies().add(a);
         levels.add(l3);
 
         draw();
@@ -360,7 +321,7 @@ public class HelloController implements Initializable {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {e.printStackTrace();}
             for (int i=0;i<level.getEnemies().size();i++){
-                if (level.getEnemies().get(i).getType()==2){
+                if (level.getEnemies().get(i).getType()==2 || level.getEnemies().get(i).getType()==3){
                     level.getEnemyBullets().add(level.getEnemies().get(i).shoot());
                 }else {
                     for (int j=1;j<8;j++){
@@ -408,6 +369,9 @@ public class HelloController implements Initializable {
             if (distancePortal<25){
                 if (currentLevel<2){
                     currentLevel=currentLevel+1;
+                    if (currentLevel==1){ nivel2(levels.get(currentLevel));}
+                    if (currentLevel==2){nivel3(levels.get(currentLevel));}
+
                     avatar.pos.setX(100);
                     avatar.pos.setY(100);
                     enemyshoot(levels.get(currentLevel));
@@ -473,6 +437,50 @@ public class HelloController implements Initializable {
                 }
         }
 
+    }
+
+    public void nivel2(Level l2){
+        for (int i=0;i<numberEnemysLV2;i++){
+            int posicion= random.nextInt(3);
+            if (posicion==1){
+                Enemy e = new Enemy(new Vector(random.nextInt(300)+300,random.nextInt(200)),avatar,3);
+                new Thread(e).start();
+                l2.getEnemies().add(e);
+            }else if (posicion==2){
+                Enemy e = new Enemy(new Vector(random.nextInt(300),random.nextInt(200)+200),avatar,3);
+                new Thread(e).start();
+                l2.getEnemies().add(e);
+            }else {
+                Enemy e = new Enemy(new Vector(random.nextInt(300)+300,random.nextInt(200)+200),avatar,3);
+                new Thread(e).start();
+                l2.getEnemies().add(e);
+            }
+
+        }
+    }
+
+    public void nivel3(Level l3){
+        for (int i=0;i<numberEnemysLV3;i++){
+            int posicion= random.nextInt(3);
+            if (posicion==1){
+                Enemy e = new Enemy(new Vector(random.nextInt(275)+300,random.nextInt(200)+25),avatar,2);
+                new Thread(e).start();
+                l3.getEnemies().add(e);
+            }else if (posicion==2){
+                Enemy e = new Enemy(new Vector(random.nextInt(300)+25,random.nextInt(175)+200),avatar,2);
+                new Thread(e).start();
+                l3.getEnemies().add(e);
+            }else {
+                Enemy e = new Enemy(new Vector(random.nextInt(275)+300,random.nextInt(175)+200),avatar,2);
+                new Thread(e).start();
+                l3.getEnemies().add(e);
+            }
+
+
+        }
+        Enemy a = new Enemy(new Vector(canvas.getWidth()/2,canvas.getHeight()/2),avatar,1);
+        new Thread(a).start();
+        l3.getEnemies().add(a);
     }
 
 
