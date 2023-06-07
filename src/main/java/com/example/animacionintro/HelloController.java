@@ -14,6 +14,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -30,8 +31,12 @@ public class HelloController implements Initializable {
     private Label livesNoLB;
     @FXML
     private Canvas canvas;
+
+    private Wall[][] wallsMap;
+    private ArrayList<Wall> walls;
     private GraphicsContext gc;
     private ArrayList<Level> levels;
+    private ArrayList<Pair<Double,Double>> walletsp;
     private int currentLevel=0;
     Random random = new Random();
     private int numberEnemysLV1= random.nextInt(4)+3;
@@ -49,6 +54,34 @@ public class HelloController implements Initializable {
         avatar = new Avatar();
         levels=new ArrayList<>();
         livesNoLB.setText(avatar.getVida()+"");
+        walls = new ArrayList<>();
+        walletsp= new ArrayList<>();
+
+        Integer obstaclesInMap[][] = new Integer[][]{
+                {null,null,null,null,null,null,null,null,null,null,null,null},
+                {null,null,null,null,null,null,null,null,null,1,null,null},
+                {null,null,null,null,1,1,null,null,null,1,null,null},
+                {null,null,null,null,1,null,null,null,null,1,null,null},
+                {null,null,null,null,null,null,null,null,null,null,null,null},
+                {null,null,1,null,null,null,null,1,null,null,null,null},
+                {null,null,1,null,null,null,1,1,null,null,null,null},
+                {null,null,1,null,null,null,null,null,null,null,null,null},
+                {null,null,null,null,null,null,null,null,null,null,null,null}
+        };
+
+        wallsMap = new Wall[9][12];
+        for (int i = 0; i < wallsMap.length ; i++) {
+            for (int j = 0; j < wallsMap[0].length ; j++) {
+                if(obstaclesInMap[i][j] == null){
+                    wallsMap[i][j] = null;
+                } else if(obstaclesInMap[i][j] == 1) {
+
+                    wallsMap[i][j] = new Wall(i,j);
+                    walls.add(wallsMap[i][j]);
+                    walletsp.add(new Pair<>(wallsMap[i][j].pos.getX(), wallsMap[i][j].pos.getY()));
+                }
+            }
+        }
 
         //generar mapa level 1
         Level l1 = new Level(0);
@@ -203,6 +236,9 @@ public class HelloController implements Initializable {
                     gc.save();
                     gc.drawImage(level.getFondo(), 0, 0, canvas.getWidth(), canvas.getHeight());
                     gc.restore();
+                    for (Wall w : walls) {
+                        w.draw(gc,false);
+                    }
                     detectColission2(level);
                     livesNoLB.setText(avatar.getVida()+"");
 
