@@ -16,6 +16,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Random;
@@ -32,6 +33,7 @@ public class HelloController implements Initializable {
     @FXML
     private Canvas canvas;
 
+    private MusicPlayer musicPlayer=new MusicPlayer();
     private Wall[][] wallsMap;
     private ArrayList<Wall> walls;
     private GraphicsContext gc;
@@ -116,6 +118,7 @@ public class HelloController implements Initializable {
         Level l3 = new Level(2);
         l3.setColor(Color.GRAY);
         levels.add(l3);
+        musicPlayer.playSound(new File("src/main/resources/com/example/animacionintro/music/battleMusic.wav"));
 
         draw();
         enemyshoot(levels.get(currentLevel));
@@ -299,6 +302,7 @@ public class HelloController implements Initializable {
                             Math.pow(avatar.pos.getX()-ammoBox.get(0).pos.getX(),2)+ Math.pow(avatar.pos.getY()-ammoBox.get(0).pos.getY(),2)
                     );
                     if (distanceBox<25){
+                        musicPlayer.playSound2(new File("src/main/resources/com/example/animacionintro/music/ammoSound.wav"));
                         ammoBoxColission();
                         ammoBox.remove(0);
 
@@ -359,6 +363,8 @@ public class HelloController implements Initializable {
                     avatar.pos.setX(avatar.pos.getX()+2);
                 }
                 if (Epressed){
+                    musicPlayer.stopSound2();
+                    musicPlayer.playSound2(new File("src/main/resources/com/example/animacionintro/music/ammoSound.wav"));
                     avatar.setAmmo(5);
                 }
                 if (Qpressed){
@@ -437,6 +443,7 @@ public class HelloController implements Initializable {
     }
 
     public void victoryMessage(){
+        musicPlayer.stopSound();
         HelloApplication.openWindow("victory-view.fxml");
         Stage stage = (Stage) canvas.getScene().getWindow();
         stage.close();
@@ -493,6 +500,7 @@ public class HelloController implements Initializable {
     }
 
     public void lossMessage(){
+        musicPlayer.stopSound();
         HelloApplication.openWindow("defeated-view.fxml");
         Stage stage = (Stage) canvas.getScene().getWindow();
         stage.close();
@@ -509,6 +517,7 @@ public class HelloController implements Initializable {
                     level.getEnemyBullets().remove(i);
                     avatar.setVida(avatar.getVida()-1);
                     if (avatar.getVida() == 0){
+                        musicPlayer.playSound2(new File("src/main/resources/com/example/animacionintro/music/deathSound.wav"));
 
                         isAlive=false;
                         lossMessage();
