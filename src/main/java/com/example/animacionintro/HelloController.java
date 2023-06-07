@@ -236,9 +236,12 @@ public class HelloController implements Initializable {
                     gc.save();
                     gc.drawImage(level.getFondo(), 0, 0, canvas.getWidth(), canvas.getHeight());
                     gc.restore();
+
+                    detectedCollisionBW(level);
                     for (Wall w : walls) {
                         w.draw(gc,false);
                     }
+
                     detectColission2(level);
                     livesNoLB.setText(avatar.getVida()+"");
 
@@ -290,6 +293,7 @@ public class HelloController implements Initializable {
 
                 detectColission(level);
 
+
                 if (avatar.isArmed()==false){
                     double distanceBox=Math.sqrt(
                             Math.pow(avatar.pos.getX()-ammoBox.get(0).pos.getX(),2)+ Math.pow(avatar.pos.getY()-ammoBox.get(0).pos.getY(),2)
@@ -300,6 +304,7 @@ public class HelloController implements Initializable {
 
                     }
                 }
+
 
                 //Calculos geometricos
 
@@ -315,6 +320,29 @@ public class HelloController implements Initializable {
                 }
                 if (avatar.pos.getY()<28){
                     avatar.pos.setY(28);
+                }
+
+                //muros
+                for (int i=0;i<walls.size();i++){
+                    if (walls.get(i).getHitbox().intersects(avatar.pos.getX(), avatar.pos.getY(), 20, 27 )){
+                        if (Wpressed==true){
+                            Wpressed=false;
+                            avatar.pos.setY(avatar.pos.getY()+15);
+
+                        }
+                        if (Apressed==true){
+                            Apressed=false;
+                            avatar.pos.setX(avatar.pos.getX()+15);
+                        }
+                        if (Spressed==true){
+                            Spressed=false;
+                            avatar.pos.setY(avatar.pos.getY()-15);
+                        }
+                        if (Dpressed==true){
+                            Dpressed=false;
+                            avatar.pos.setX(avatar.pos.getX()-15);
+                        }
+                    }
                 }
 
 
@@ -348,6 +376,23 @@ public class HelloController implements Initializable {
             }
         });
         ae.start();
+    }
+
+    private void detectedCollisionBW(Level level){
+        for (Wall w:walls) {
+            for (Bullet b: level.getBullets()){
+                if (b.getHitbox().intersects( w.pos.getY(), w.pos.getX(),50, 50)){
+                    if (w.getShield()<1){
+                        walls.remove(w);
+                    }else {
+                        level.getBullets().remove(b);
+                        w.setShield(w.getShield()-1);
+                    }
+
+
+                }
+            }
+        }
     }
 
     public void enemyshoot(Level level){

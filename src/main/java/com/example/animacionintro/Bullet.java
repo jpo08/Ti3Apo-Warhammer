@@ -16,12 +16,14 @@ public class Bullet extends Drawing{
         this.dir =dir;
         this.pos=pos;
         sprite=new Image(uri);
+        hitbox = new Circle(pos.getX(), pos.getY(), 15);
     }
 
     @Override
     public void draw(GraphicsContext gc,boolean m) {
         hitbox = new Circle(pos.getX(), pos.getY(), 15);
         gc.drawImage(sprite,pos.getX()-7.5,pos.getY()-7.5,15,15);
+
 
         pos.setX(pos.getX()+dir.getX());
         pos.setY(pos.getY()+dir.getY());
@@ -30,5 +32,9 @@ public class Bullet extends Drawing{
 
     public Circle getHitbox() {
         return hitbox;
+    }
+
+    public void setHitbox(Circle hitbox) {
+        this.hitbox = hitbox;
     }
 }
