@@ -326,37 +326,37 @@ public class HelloController implements Initializable {
                 for (int i=0;i<walls.size();i++){
                     if (walls.get(i).getHitbox().intersects(avatar.pos.getX(), avatar.pos.getY(), 20, 27 )){
                         if (Wpressed==true){
-                            Wpressed=false;
                             avatar.pos.setY(avatar.pos.getY()+15);
 
                         }
                         if (Apressed==true){
-                            Apressed=false;
                             avatar.pos.setX(avatar.pos.getX()+15);
                         }
                         if (Spressed==true){
-                            Spressed=false;
+
                             avatar.pos.setY(avatar.pos.getY()-15);
                         }
                         if (Dpressed==true){
-                            Dpressed=false;
+
                             avatar.pos.setX(avatar.pos.getX()-15);
                         }
+
                     }
+
                 }
 
 
                 if(Wpressed){
-                    avatar.pos.setY(avatar.pos.getY()-3);
+                    avatar.pos.setY(avatar.pos.getY()-2);
                 }
                 if (Apressed) {
-                    avatar.pos.setX(avatar.pos.getX()-3);
+                    avatar.pos.setX(avatar.pos.getX()-2);
                 }
                 if (Spressed) {
-                    avatar.pos.setY(avatar.pos.getY()+3);
+                    avatar.pos.setY(avatar.pos.getY()+2);
                 }
                 if (Dpressed) {
-                    avatar.pos.setX(avatar.pos.getX()+3);
+                    avatar.pos.setX(avatar.pos.getX()+2);
                 }
                 if (Epressed){
                     avatar.setAmmo(5);
@@ -371,7 +371,7 @@ public class HelloController implements Initializable {
                 }
 
                 try {
-                    Thread.sleep(16);
+                    Thread.sleep(12);
                 } catch (InterruptedException e) {e.printStackTrace();}
             }
         });
