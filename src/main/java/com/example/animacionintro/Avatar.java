@@ -1,7 +1,10 @@
 package com.example.animacionintro;
 
+import javafx.geometry.Bounds;
+import javafx.geometry.BoundingBox;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.shape.Rectangle;
 
 public class Avatar extends Drawing{
 
@@ -18,6 +21,7 @@ public class Avatar extends Drawing{
     private int secondWeapon;
     private int vida;
     private DeadAnimation deadAnimation;
+    private Rectangle hitbox;
 
 
 
@@ -39,6 +43,7 @@ public class Avatar extends Drawing{
         secondWeapon=1;
         vida=3;
         deadAnimation=new DeadAnimation(1,pos);
+        hitbox= new Rectangle(pos.getX() - 25, pos.getY() - 25, 50, 50);
     }
 
     public void setPuntero(Puntero puntero) {
@@ -79,6 +84,48 @@ public class Avatar extends Drawing{
 
     public DeadAnimation getDeadAnimation() {
         return deadAnimation;
+    }
+
+    public Rectangle getHitbox() {
+        return hitbox;
+    }
+
+    public void setHitbox(Rectangle hitbox) {
+        this.hitbox = hitbox;
+    }
+
+
+
+
+    public boolean detectCollision(Wall wall) {
+        Bounds boundsAvatar = getBoundsInParent();
+        Bounds boundsWall = wall.getHitbox().getBoundsInParent();
+        return boundsAvatar.intersects(boundsWall);
+    }
+
+    public double calculateOverlapX(Wall wall) {
+        Bounds boundsAvatar = getBoundsInParent();
+        Bounds boundsWall = wall.getHitbox().getBoundsInParent();
+
+        if (boundsAvatar.getMinX() < boundsWall.getMinX()) {
+            return boundsAvatar.getMaxX() - boundsWall.getMinX();
+        } else {
+            return boundsWall.getMaxX() - boundsAvatar.getMinX();
+        }
+    }
+
+    public double calculateOverlapY(Wall wall) {
+        Bounds boundsAvatar = getBoundsInParent();
+        Bounds boundsWall = wall.getHitbox().getBoundsInParent();
+
+        if (boundsAvatar.getMinY() < boundsWall.getMinY()) {
+            return boundsAvatar.getMaxY() - boundsWall.getMinY();
+        } else {
+            return boundsWall.getMaxY() - boundsAvatar.getMinY();
+        }
+    }
+    public Bounds getBoundsInParent() {
+        return new BoundingBox(pos.getX() - 25, pos.getY() - 25, 50, 50);
     }
 
     @Override

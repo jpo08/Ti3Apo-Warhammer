@@ -58,21 +58,21 @@ public class HelloController implements Initializable {
         livesNoLB.setText(avatar.getVida()+"");
 
         //generar mapa level 1
-        Level l1 = new Level(0);
+        Level l1 = new Level(0,canvas);
         ammoBox.add(new AmmoBox(canvas));
         portal = new Portal(canvas);
         for (int i=0;i<numberEnemysLV1;i++){
             int posicion= random.nextInt(3);
             if (posicion==1){
-                Enemy e = new Enemy(new Vector(random.nextInt(300)+300,random.nextInt(200)),avatar,2);
+                Enemy e = new Enemy(new Vector(random.nextInt(300)+600,random.nextInt(400)),avatar,2);
                 new Thread(e).start();
                 l1.getEnemies().add(e);
             }else if (posicion==2){
-                Enemy e = new Enemy(new Vector(random.nextInt(300),random.nextInt(200)+200),avatar,2);
+                Enemy e = new Enemy(new Vector(random.nextInt(600),random.nextInt(200)+400),avatar,2);
                 new Thread(e).start();
                 l1.getEnemies().add(e);
             }else {
-                Enemy e = new Enemy(new Vector(random.nextInt(300)+300,random.nextInt(200)+200),avatar,2);
+                Enemy e = new Enemy(new Vector(random.nextInt(300)+600,random.nextInt(200)+400),avatar,2);
                 new Thread(e).start();
                 l1.getEnemies().add(e);
             }
@@ -81,13 +81,13 @@ public class HelloController implements Initializable {
         levels.add(l1);
 
         //generar segundo mapa
-        Level l2 = new Level(1);
+        Level l2 = new Level(1,canvas);
         l2.setColor(Color.GRAY);
 
         levels.add(l2);
 
         //generar tercer mapa
-        Level l3 = new Level(2);
+        Level l3 = new Level(2,canvas);
         l3.setColor(Color.GRAY);
         levels.add(l3);
         musicPlayer.playSound(new File("src/main/resources/com/example/animacionintro/music/battleMusic.wav"));
@@ -214,7 +214,7 @@ public class HelloController implements Initializable {
 
                     detectedCollisionBW(level);
                     for (Wall w : level.getWalls()) {
-                        w.draw(gc,false);
+                        w.draw();
                     }
 
                     detectColission2(level);
@@ -298,49 +298,37 @@ public class HelloController implements Initializable {
                     avatar.pos.setY(28);
                 }
 
-                //muros
-                for (int i=0;i<level.getWalls().size();i++){
-                    if (level.getWalls().get(i).getHitbox().intersects(avatar.pos.getX(), avatar.pos.getY(), 20, 27 )){
-                        if (Wpressed==true){
-                            avatar.pos.setY(avatar.pos.getY()+15);
-
-                        }
-                        if (Apressed==true){
-                            avatar.pos.setX(avatar.pos.getX()+15);
-                        }
-                        if (Spressed==true){
-
-                            avatar.pos.setY(avatar.pos.getY()-15);
-                        }
-                        if (Dpressed==true){
-
-                            avatar.pos.setX(avatar.pos.getX()-15);
-                        }
-
-                    }else {
-                        for (int j=0;j<level.getEnemies().size();j++){
-                            if (level.getWalls().get(i).getHitbox().intersects(level.getEnemies().get(j).pos.getX(), level.getEnemies().get(j).pos.getY(), 25, 25 )){
-                                level.getEnemies().get(j).shoot();
-
-                            }
-                        }
+                for (int i=0;i<level.getEnemies().size();i++){
+                    if (level.getEnemies().get(i).pos.getX()>canvas.getWidth()-25){
+                        avatar.pos.setX(canvas.getWidth()-25);
                     }
-
-
+                    if (level.getEnemies().get(i).pos.getX()<25){
+                        avatar.pos.setX(25);
+                    }
+                    if (level.getEnemies().get(i).pos.getY()>canvas.getHeight()-25){
+                        avatar.pos.setY(canvas.getHeight()-25);
+                    }
+                    if (level.getEnemies().get(i).pos.getY()<25){
+                        avatar.pos.setY(25);
+                    }
                 }
+
+                //muros
+                avatarWallCollision(level);
+                EnemyWallCollisions();
 
 
                 if(Wpressed){
-                    avatar.pos.setY(avatar.pos.getY()-2);
+                    avatar.pos.setY(avatar.pos.getY()-1);
                 }
                 if (Apressed) {
-                    avatar.pos.setX(avatar.pos.getX()-2);
+                    avatar.pos.setX(avatar.pos.getX()-1);
                 }
                 if (Spressed) {
-                    avatar.pos.setY(avatar.pos.getY()+2);
+                    avatar.pos.setY(avatar.pos.getY()+1);
                 }
                 if (Dpressed) {
-                    avatar.pos.setX(avatar.pos.getX()+2);
+                    avatar.pos.setX(avatar.pos.getX()+1);
                 }
                 if (Epressed){
                     musicPlayer.stopSound2();
@@ -357,19 +345,84 @@ public class HelloController implements Initializable {
                 }
 
                 try {
-                    Thread.sleep(12);
+                    Thread.sleep(10);
                 } catch (InterruptedException e) {e.printStackTrace();}
             }
         });
         ae.start();
     }
 
+
+    public void avatarWallCollision(Level level){
+
+        for (Wall wall : level.getWalls()) {
+            if (avatar.detectCollision(wall)) {
+                double overlapX = avatar.calculateOverlapX(wall);
+                double overlapY = avatar.calculateOverlapY(wall);
+
+                if (overlapX < overlapY) {
+                    if (Apressed && !Dpressed && avatar.pos.getX() > wall.getX()) {
+                        avatar.pos.setX(wall.getX() + wall.getHitbox().getWidth() + 30);
+                    } else if (Dpressed && !Apressed && avatar.pos.getX() < wall.getX()) {
+                        avatar.pos.setX(wall.getX() - 30);
+                    }
+                } else {
+                    if (Wpressed && !Spressed && avatar.pos.getY() > wall.getY()) {
+                        avatar.pos.setY(wall.getY() + wall.getHitbox().getHeight() + 30);
+                    } else if (Spressed && !Wpressed && avatar.pos.getY() < wall.getY()) {
+                        avatar.pos.setY(wall.getY() - 30);
+                    }
+                }
+            }
+        }
+    }
+
+
+    public void EnemyWallCollisions() {
+        Level level = levels.get(currentLevel);
+
+
+        for (Wall wall : level.getWalls()) {
+            for (Enemy enemy : level.getEnemies()) {
+                if (enemy.isColliding(wall)) {
+                    double overlapX = enemy.getOverlapX(wall);
+
+                    double overlapY = enemy.getOverlapY(wall);
+
+                    if (overlapX < overlapY) {
+
+                        if (enemy.pos.getX() > wall.getX()) {
+
+                            enemy.pos.setX(wall.getX() + wall.getHitbox().getWidth() + 25);
+                        } else if (enemy.pos.getX() < wall.getX()) {
+
+                            enemy.pos.setX(wall.getX() - 25);
+                        }
+                    } else {
+
+                        if (enemy.pos.getY() > wall.getY()) {
+
+                            enemy.pos.setY(wall.getY() + wall.getHitbox().getHeight() + 25);
+                        } else if (enemy.pos.getY() < wall.getY()) {
+
+                            enemy.pos.setY(wall.getY() - 25);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+
+
     private void detectedCollisionBW(Level level){
         for (Wall w:level.getWalls()) {
             for (Bullet b: level.getBullets()){
-                if (b.getHitbox().intersects( w.pos.getY(), w.pos.getX(),50, 50)){
+                if (b.getHitbox().intersects( w.getX(), w.getY(),50, 50)){
                     if (w.getShield()<1){
-                        musicPlayer.playSound2(new File("src/main/resources/com/example/animacionintro/music/explosionSound.wav"));
+                        musicPlayer.stopSound3();
+                        musicPlayer.playSound3(new File("src/main/resources/com/example/animacionintro/music/explosionSound.wav"));
                         level.getWalls().remove(w);
                     }else {
                         level.getBullets().remove(b);
@@ -514,15 +567,15 @@ public class HelloController implements Initializable {
         for (int i=0;i<numberEnemysLV2;i++){
             int posicion= random.nextInt(3);
             if (posicion==1){
-                Enemy e = new Enemy(new Vector(random.nextInt(300)+300,random.nextInt(200)),avatar,3);
+                Enemy e = new Enemy(new Vector(random.nextInt(300)+600,random.nextInt(400)),avatar,3);
                 new Thread(e).start();
                 l2.getEnemies().add(e);
             }else if (posicion==2){
-                Enemy e = new Enemy(new Vector(random.nextInt(300),random.nextInt(200)+200),avatar,3);
+                Enemy e = new Enemy(new Vector(random.nextInt(600),random.nextInt(200)+400),avatar,3);
                 new Thread(e).start();
                 l2.getEnemies().add(e);
             }else {
-                Enemy e = new Enemy(new Vector(random.nextInt(300)+300,random.nextInt(200)+200),avatar,3);
+                Enemy e = new Enemy(new Vector(random.nextInt(300)+600,random.nextInt(200)+400),avatar,3);
                 new Thread(e).start();
                 l2.getEnemies().add(e);
             }
@@ -534,15 +587,15 @@ public class HelloController implements Initializable {
         for (int i=0;i<numberEnemysLV3;i++){
             int posicion= random.nextInt(3);
             if (posicion==1){
-                Enemy e = new Enemy(new Vector(random.nextInt(275)+300,random.nextInt(200)+25),avatar,2);
+                Enemy e = new Enemy(new Vector(random.nextInt(300)+600,random.nextInt(400)),avatar,2);
                 new Thread(e).start();
                 l3.getEnemies().add(e);
             }else if (posicion==2){
-                Enemy e = new Enemy(new Vector(random.nextInt(300)+25,random.nextInt(175)+200),avatar,2);
+                Enemy e = new Enemy(new Vector(random.nextInt(600),random.nextInt(200)+400),avatar,2);
                 new Thread(e).start();
                 l3.getEnemies().add(e);
             }else {
-                Enemy e = new Enemy(new Vector(random.nextInt(275)+300,random.nextInt(175)+200),avatar,2);
+                Enemy e = new Enemy(new Vector(random.nextInt(300)+600,random.nextInt(200)+400),avatar,2);
                 new Thread(e).start();
                 l3.getEnemies().add(e);
             }

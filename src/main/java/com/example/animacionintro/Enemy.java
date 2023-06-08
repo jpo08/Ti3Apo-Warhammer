@@ -1,5 +1,7 @@
 package com.example.animacionintro;
 
+import javafx.geometry.BoundingBox;
+import javafx.geometry.Bounds;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -87,6 +89,45 @@ public class Enemy extends Drawing implements Runnable{
 
     public void setDead(boolean dead) {
         isDead = dead;
+    }
+
+    public Bounds getBoundsInParent() {
+        return new BoundingBox(pos.getX() - 25, pos.getY() - 25, 50, 50);
+    }
+
+
+    public boolean isColliding(Wall wall) {
+        Bounds enemyBounds = getBoundsInParent();
+        Bounds wallBounds = wall.getHitbox().getBoundsInParent();
+        return enemyBounds.intersects(wallBounds);
+    }
+
+
+    public double getOverlapX(Wall wall) {
+        Bounds enemyBounds = getBoundsInParent();
+        Bounds wallBounds = wall.getHitbox().getBoundsInParent();
+
+        if (enemyBounds.getMinX() < wallBounds.getMinX()) {
+
+            return enemyBounds.getMaxX() - wallBounds.getMinX();
+        } else {
+
+            return wallBounds.getMaxX() - enemyBounds.getMinX();
+        }
+    }
+
+
+    public double getOverlapY(Wall wall) {
+        Bounds enemyBounds = getBoundsInParent();
+        Bounds wallBounds = wall.getHitbox().getBoundsInParent();
+
+        if (enemyBounds.getMinY() < wallBounds.getMinY()) {
+
+            return enemyBounds.getMaxY() - wallBounds.getMinY();
+        } else {
+
+            return wallBounds.getMaxY() - enemyBounds.getMinY();
+        }
     }
 
     public void move(int type){
