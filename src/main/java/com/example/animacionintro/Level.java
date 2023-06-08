@@ -29,24 +29,27 @@ public class Level {
         walls = new ArrayList<>();
         walletsp= new ArrayList<>();
         if (id==0){
-            String uriBack ="file:"+ HelloApplication.class.getResource("fondoLv1.png").getPath();
+            String uriBack ="file:"+ HelloApplication.class.getResource("fondoLv1v2.png").getPath();
             fondo=new Image(uriBack);
 
             Integer obstaclesInMap[][] = new Integer[][]{
-                    {null,null,null,null,null,null,null,null,null,null,null,null},
-                    {null,null,null,null,null,null,null,null,null,1,null,null},
-                    {null,null,null,null,1,1,null,null,null,1,null,null},
-                    {null,null,null,null,1,null,null,null,null,1,null,null},
-                    {null,null,null,null,null,null,null,null,null,null,null,null},
-                    {null,null,1,null,null,null,null,1,null,null,null,null},
-                    {null,null,1,null,null,null,1,1,null,null,null,null},
-                    {null,null,1,null,null,null,null,null,null,null,null,null},
-                    {null,null,null,null,null,null,null,null,null,null,null,null}
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
+                    {0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0},
+                    {0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0},
+                    {0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
             };
-            wallsMap = new Wall[9][12];
+            wallsMap = new Wall[12][20];
             for (int i = 0; i < wallsMap.length ; i++) {
                 for (int j = 0; j < wallsMap[0].length ; j++) {
-                    if(obstaclesInMap[i][j] == null){
+                    if(obstaclesInMap[i][j] == 0){
                         wallsMap[i][j] = null;
                     } else if(obstaclesInMap[i][j] == 1) {
 
@@ -58,24 +61,27 @@ public class Level {
             }
 
         }else if (id==1){
-            String uriBack ="file:"+ HelloApplication.class.getResource("fondoLv2.png").getPath();
+            String uriBack ="file:"+ HelloApplication.class.getResource("fondoLv2v2.png").getPath();
             fondo=new Image(uriBack);
 
             Integer obstaclesInMap[][] = new Integer[][]{
-                    {null,null,null,null,null,null,null,null,null,null,null,null},
-                    {null,null,null,null,null,null,null,null,null,1,null,null},
-                    {null,null,null,null,1,1,null,null,null,1,null,null},
-                    {null,null,null,null,1,null,null,null,null,1,null,null},
-                    {null,null,null,null,null,null,null,null,null,null,null,null},
-                    {null,null,1,null,null,null,null,1,null,null,null,null},
-                    {null,null,1,null,null,null,1,1,null,null,null,null},
-                    {null,null,1,null,null,null,null,null,null,null,null,null},
-                    {null,null,null,null,null,null,null,null,null,null,null,null}
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
+                    {0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0},
+                    {0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0},
+                    {0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
             };
-            wallsMap = new Wall[9][12];
+            wallsMap = new Wall[12][20];
             for (int i = 0; i < wallsMap.length ; i++) {
                 for (int j = 0; j < wallsMap[0].length ; j++) {
-                    if(obstaclesInMap[i][j] == null){
+                    if(obstaclesInMap[i][j] == 0){
                         wallsMap[i][j] = null;
                     } else if(obstaclesInMap[i][j] == 1) {
 
@@ -87,24 +93,27 @@ public class Level {
             }
 
         }else{
-            String uriBack ="file:"+ HelloApplication.class.getResource("fondoLv3.png").getPath();
+            String uriBack ="file:"+ HelloApplication.class.getResource("fondoLv3v2.png").getPath();
             fondo=new Image(uriBack);
 
             Integer obstaclesInMap[][] = new Integer[][]{
-                    {null,null,null,null,null,null,null,null,null,null,null,null},
-                    {null,null,null,null,null,null,null,null,null,1,null,null},
-                    {null,null,null,null,1,1,null,null,null,1,null,null},
-                    {null,null,null,null,1,null,null,null,null,1,null,null},
-                    {null,null,null,null,null,null,null,null,null,null,null,null},
-                    {null,null,1,null,null,null,null,1,null,null,null,null},
-                    {null,null,1,null,null,null,1,1,null,null,null,null},
-                    {null,null,1,null,null,null,null,null,null,null,null,null},
-                    {null,null,null,null,null,null,null,null,null,null,null,null}
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
+                    {0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0},
+                    {0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0},
+                    {0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
             };
-            wallsMap = new Wall[9][12];
+            wallsMap = new Wall[12][20];
             for (int i = 0; i < wallsMap.length ; i++) {
                 for (int j = 0; j < wallsMap[0].length ; j++) {
-                    if(obstaclesInMap[i][j] == null){
+                    if(obstaclesInMap[i][j] == 0){
                         wallsMap[i][j] = null;
                     } else if(obstaclesInMap[i][j] == 1) {
 
