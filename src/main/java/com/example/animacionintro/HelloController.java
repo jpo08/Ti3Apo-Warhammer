@@ -493,6 +493,7 @@ public class HelloController implements Initializable {
     public void victoryMessage(){
         musicPlayer.stopSound();
         HelloApplication.openWindow("victory-view.fxml");
+        isAlive=false;
         Stage stage = (Stage) canvas.getScene().getWindow();
         stage.close();
     }
@@ -550,6 +551,7 @@ public class HelloController implements Initializable {
     public void lossMessage(){
         musicPlayer.stopSound();
         HelloApplication.openWindow("defeated-view.fxml");
+        isAlive=false;
         Stage stage = (Stage) canvas.getScene().getWindow();
         stage.close();
     }
