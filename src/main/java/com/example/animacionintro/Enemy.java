@@ -58,7 +58,7 @@ public class Enemy extends Drawing implements Runnable{
 
             pos.setY(pos.getY()+deltaY);
             pos.setX(pos.getX()+deltaX);
-            move();
+            move(1);
 
 
             try {
@@ -89,12 +89,15 @@ public class Enemy extends Drawing implements Runnable{
         isDead = dead;
     }
 
-    public void move(){
-        if(player.pos.getX()-pos.getX()>0) pos.setX(pos.getX()+1);
-        else if(player.pos.getX()-pos.getX()<0) pos.setX(pos.getX()-1);
+    public void move(int type){
+        if (type==1){
+            if(player.pos.getX()-pos.getX()>0) pos.setX(pos.getX()+1);
+            else if(player.pos.getX()-pos.getX()<0) pos.setX(pos.getX()-1);
 
-        if(player.pos.getY()-pos.getY()>0) pos.setY(pos.getY()+1);
-        else if(player.pos.getY()-pos.getY()<0) pos.setY(pos.getY()-1);
+            if(player.pos.getY()-pos.getY()>0) pos.setY(pos.getY()+1);
+            else if(player.pos.getY()-pos.getY()<0) pos.setY(pos.getY()-1);
+        }else {}
+
     }
 
     public Bullet shoot(){

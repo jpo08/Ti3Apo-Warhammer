@@ -34,11 +34,9 @@ public class HelloController implements Initializable {
     private Canvas canvas;
 
     private MusicPlayer musicPlayer=new MusicPlayer();
-    private Wall[][] wallsMap;
-    private ArrayList<Wall> walls;
     private GraphicsContext gc;
     private ArrayList<Level> levels;
-    private ArrayList<Pair<Double,Double>> walletsp;
+
     private int currentLevel=0;
     Random random = new Random();
     private int numberEnemysLV1= random.nextInt(4)+3;
@@ -56,34 +54,6 @@ public class HelloController implements Initializable {
         avatar = new Avatar();
         levels=new ArrayList<>();
         livesNoLB.setText(avatar.getVida()+"");
-        walls = new ArrayList<>();
-        walletsp= new ArrayList<>();
-
-        Integer obstaclesInMap[][] = new Integer[][]{
-                {null,null,null,null,null,null,null,null,null,null,null,null},
-                {null,null,null,null,null,null,null,null,null,1,null,null},
-                {null,null,null,null,1,1,null,null,null,1,null,null},
-                {null,null,null,null,1,null,null,null,null,1,null,null},
-                {null,null,null,null,null,null,null,null,null,null,null,null},
-                {null,null,1,null,null,null,null,1,null,null,null,null},
-                {null,null,1,null,null,null,1,1,null,null,null,null},
-                {null,null,1,null,null,null,null,null,null,null,null,null},
-                {null,null,null,null,null,null,null,null,null,null,null,null}
-        };
-
-        wallsMap = new Wall[9][12];
-        for (int i = 0; i < wallsMap.length ; i++) {
-            for (int j = 0; j < wallsMap[0].length ; j++) {
-                if(obstaclesInMap[i][j] == null){
-                    wallsMap[i][j] = null;
-                } else if(obstaclesInMap[i][j] == 1) {
-
-                    wallsMap[i][j] = new Wall(i,j);
-                    walls.add(wallsMap[i][j]);
-                    walletsp.add(new Pair<>(wallsMap[i][j].pos.getX(), wallsMap[i][j].pos.getY()));
-                }
-            }
-        }
 
         //generar mapa level 1
         Level l1 = new Level(0);
@@ -241,7 +211,7 @@ public class HelloController implements Initializable {
                     gc.restore();
 
                     detectedCollisionBW(level);
-                    for (Wall w : walls) {
+                    for (Wall w : level.getWalls()) {
                         w.draw(gc,false);
                     }
 
@@ -327,8 +297,8 @@ public class HelloController implements Initializable {
                 }
 
                 //muros
-                for (int i=0;i<walls.size();i++){
-                    if (walls.get(i).getHitbox().intersects(avatar.pos.getX(), avatar.pos.getY(), 20, 27 )){
+                for (int i=0;i<level.getWalls().size();i++){
+                    if (level.getWalls().get(i).getHitbox().intersects(avatar.pos.getX(), avatar.pos.getY(), 20, 27 )){
                         if (Wpressed==true){
                             avatar.pos.setY(avatar.pos.getY()+15);
 
@@ -345,7 +315,15 @@ public class HelloController implements Initializable {
                             avatar.pos.setX(avatar.pos.getX()-15);
                         }
 
+                    }else {
+                        for (int j=0;j<level.getEnemies().size();j++){
+                            if (level.getWalls().get(i).getHitbox().intersects(level.getEnemies().get(j).pos.getX(), level.getEnemies().get(j).pos.getY(), 25, 25 )){
+                                level.getEnemies().get(j).shoot();
+
+                            }
+                        }
                     }
+
 
                 }
 
@@ -385,11 +363,12 @@ public class HelloController implements Initializable {
     }
 
     private void detectedCollisionBW(Level level){
-        for (Wall w:walls) {
+        for (Wall w:level.getWalls()) {
             for (Bullet b: level.getBullets()){
                 if (b.getHitbox().intersects( w.pos.getY(), w.pos.getX(),50, 50)){
                     if (w.getShield()<1){
-                        walls.remove(w);
+                        musicPlayer.playSound2(new File("src/main/resources/com/example/animacionintro/music/explosionSound.wav"));
+                        level.getWalls().remove(w);
                     }else {
                         level.getBullets().remove(b);
                         w.setShield(w.getShield()-1);

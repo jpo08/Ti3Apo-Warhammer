@@ -8,6 +8,7 @@ public class Wall extends Drawing{
     private Image sprite;
     private Rectangle hitbox;
     private int shield;
+    private int x,y;
 
     public Wall(int x, int y) {
         String uri = "file:"+ HelloApplication.class.getResource("wall.png").getPath();
