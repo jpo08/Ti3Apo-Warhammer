@@ -10,9 +10,19 @@ public class Wall extends Drawing{
     private int shield;
     private int x,y;
 
-    public Wall(int x, int y) {
-        String uri = "file:"+ HelloApplication.class.getResource("wall.png").getPath();
-        sprite=new Image(uri);
+    public Wall(int x, int y,int type) {
+        if (type==1){
+            String uri = "file:"+ HelloApplication.class.getResource("wall.png").getPath();
+            sprite=new Image(uri);
+        } else if (type==2) {
+            String uri = "file:"+ HelloApplication.class.getResource("rockblue.png").getPath();
+            sprite=new Image(uri);
+        }else {
+            String uri = "file:"+ HelloApplication.class.getResource("blackwall.png").getPath();
+            sprite=new Image(uri);
+        }
+
+
         this.pos.setY(y*50);
         this.pos.setX(x*50);
         hitbox=new Rectangle(pos.getY(),pos.getX(),50,50);

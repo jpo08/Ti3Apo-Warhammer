@@ -53,7 +53,7 @@ public class Level {
                         wallsMap[i][j] = null;
                     } else if(obstaclesInMap[i][j] == 1) {
 
-                        wallsMap[i][j] = new Wall(i,j);
+                        wallsMap[i][j] = new Wall(i,j,1);
                         walls.add(wallsMap[i][j]);
                         walletsp.add(new Pair<>(wallsMap[i][j].pos.getX(), wallsMap[i][j].pos.getY()));
                     }
@@ -85,7 +85,7 @@ public class Level {
                         wallsMap[i][j] = null;
                     } else if(obstaclesInMap[i][j] == 1) {
 
-                        wallsMap[i][j] = new Wall(i,j);
+                        wallsMap[i][j] = new Wall(i,j,2);
                         walls.add(wallsMap[i][j]);
                         walletsp.add(new Pair<>(wallsMap[i][j].pos.getX(), wallsMap[i][j].pos.getY()));
                     }
@@ -117,7 +117,7 @@ public class Level {
                         wallsMap[i][j] = null;
                     } else if(obstaclesInMap[i][j] == 1) {
 
-                        wallsMap[i][j] = new Wall(i,j);
+                        wallsMap[i][j] = new Wall(i,j,3);
                         walls.add(wallsMap[i][j]);
                         walletsp.add(new Pair<>(wallsMap[i][j].pos.getX(), wallsMap[i][j].pos.getY()));
                     }
