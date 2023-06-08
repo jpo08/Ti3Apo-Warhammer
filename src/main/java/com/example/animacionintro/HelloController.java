@@ -31,6 +31,8 @@ public class HelloController implements Initializable {
     @FXML
     private Label livesNoLB;
     @FXML
+    private Label levelNameL;
+    @FXML
     private Canvas canvas;
 
     private MusicPlayer musicPlayer=new MusicPlayer();
@@ -436,8 +438,8 @@ public class HelloController implements Initializable {
             if (distancePortal<25){
                 if (currentLevel<2){
                     currentLevel=currentLevel+1;
-                    if (currentLevel==1){ nivel2(levels.get(currentLevel));}
-                    if (currentLevel==2){nivel3(levels.get(currentLevel));}
+                    if (currentLevel==1){ nivel2(levels.get(currentLevel)); levelNameL.setText("Lv2. Klendathu");}
+                    if (currentLevel==2){nivel3(levels.get(currentLevel)); levelNameL.setText("Lv3. Solaris");}
 
                     avatar.pos.setX(100);
                     avatar.pos.setY(100);
