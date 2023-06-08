@@ -432,6 +432,20 @@ public class HelloController implements Initializable {
 
                 }
             }
+            for (Bullet be: level.getEnemyBullets()){
+                if (be.getHitbox().intersects( w.getX(), w.getY(),50, 50)){
+                    if (w.getShield()<1){
+                        musicPlayer.stopSound3();
+                        musicPlayer.playSound3(new File("src/main/resources/com/example/animacionintro/music/explosionSound.wav"));
+                        level.getWalls().remove(w);
+                    }else {
+                        level.getEnemyBullets().remove(be);
+                        w.setShield(w.getShield()-1);
+                    }
+
+
+                }
+            }
         }
     }
 
