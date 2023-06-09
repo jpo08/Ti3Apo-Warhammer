@@ -465,7 +465,7 @@ public class HelloController implements Initializable {
                     if (w.getShield()<1){
                         explosion.add(new Explosion(w.getX(), w.getY()));
 
-                        musicPlayer.playSound3(new File("src/main/resources/com/example/animacionintro/music/explosionSound.wav"));
+                        //musicPlayer.playSound3(new File("src/main/resources/com/example/animacionintro/music/explosionSound.wav"));
                         level.getWalls().remove(w);
                     }else {
                         level.getBullets().remove(b);
@@ -479,7 +479,7 @@ public class HelloController implements Initializable {
                 if (be.getHitbox().intersects( w.getX(), w.getY(),50, 50)){
                     if (w.getShield()<1){
                         explosion.add(new Explosion(w.getX(), w.getY()));
-                        musicPlayer.playSound3(new File("src/main/resources/com/example/animacionintro/music/explosionSound.wav"));
+                        //musicPlayer.playSound3(new File("src/main/resources/com/example/animacionintro/music/explosionSound.wav"));
                         level.getWalls().remove(w);
                     }else {
                         level.getEnemyBullets().remove(be);
