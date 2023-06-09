@@ -148,7 +148,7 @@ public class Enemy extends Drawing implements Runnable{
         diff.normalize();
         diff.setMag(4);
 
-        Bullet bullet = new Bullet( new Vector(pos.getX(), pos.getY() ),diff);
+        Bullet bullet = new Bullet( new Vector(pos.getX(), pos.getY() ),diff,2);
 
         return bullet;
 

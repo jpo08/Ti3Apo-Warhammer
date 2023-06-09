@@ -11,11 +11,17 @@ public class Bullet extends Drawing{
 
     private Circle hitbox;
 
-    public Bullet(Vector pos,Vector dir) {
-        String uri = "file:"+ HelloApplication.class.getResource("bullet.png").getPath();
+    public Bullet(Vector pos,Vector dir,int type) {
+        if (type==1){String uri = "file:"+ HelloApplication.class.getResource("bullet.png").getPath();
+            sprite=new Image(uri);
+        }else {
+            String uri = "file:"+ HelloApplication.class.getResource("bullet2.png").getPath();
+            sprite=new Image(uri);
+        }
+
         this.dir =dir;
         this.pos=pos;
-        sprite=new Image(uri);
+
         hitbox = new Circle(pos.getX(), pos.getY(), 15);
     }
 

@@ -129,13 +129,13 @@ public class HelloController implements Initializable {
                 diff2.setMag(4);
 
                 levels.get(currentLevel).getBullets().add(
-                        new Bullet(new Vector(avatar.pos.getX(),avatar.pos.getY()),diff )
+                        new Bullet(new Vector(avatar.pos.getX(),avatar.pos.getY()),diff,1 )
                 );
                 levels.get(currentLevel).getBullets().add(
-                        new Bullet(new Vector(avatar.pos.getX(),avatar.pos.getY()),diff1 )
+                        new Bullet(new Vector(avatar.pos.getX(),avatar.pos.getY()),diff1,1 )
                 );
                 levels.get(currentLevel).getBullets().add(
-                        new Bullet(new Vector(avatar.pos.getX(),avatar.pos.getY()),diff2 )
+                        new Bullet(new Vector(avatar.pos.getX(),avatar.pos.getY()),diff2,1 )
                 );
                 avatar.setAmmo(avatar.getAmmo()-5);
 
@@ -147,7 +147,7 @@ public class HelloController implements Initializable {
                 diff.setMag(4);
 
                 levels.get(currentLevel).getBullets().add(
-                        new Bullet(new Vector(avatar.pos.getX(),avatar.pos.getY()),diff )
+                        new Bullet(new Vector(avatar.pos.getX(),avatar.pos.getY()),diff,1 )
                 );
                 avatar.setAmmo(avatar.getAmmo()-1);
 
@@ -371,6 +371,7 @@ public class HelloController implements Initializable {
     }
 
 
+
     public void avatarWallCollision(Level level){
 
         for (Wall wall : level.getWalls()) {
@@ -439,7 +440,7 @@ public class HelloController implements Initializable {
             for (Bullet b: level.getBullets()){
                 if (b.getHitbox().intersects( w.getX(), w.getY(),50, 50)){
                     if (w.getShield()<1){
-                        musicPlayer.stopSound3();
+
                         musicPlayer.playSound3(new File("src/main/resources/com/example/animacionintro/music/explosionSound.wav"));
                         level.getWalls().remove(w);
                     }else {
@@ -488,7 +489,7 @@ public class HelloController implements Initializable {
 
                         level.getEnemyBullets().add(
                                 new Bullet(new Vector(
-                                        level.getEnemies().get(i).pos.getX(),level.getEnemies().get(i).pos.getY()),diff
+                                        level.getEnemies().get(i).pos.getX(),level.getEnemies().get(i).pos.getY()),diff,2
                                 )
                         );
                     }
