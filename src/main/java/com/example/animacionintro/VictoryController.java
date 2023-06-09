@@ -19,7 +19,9 @@ public class VictoryController implements Initializable {
     private AudioInputStream audioInput;
 
     private File musicPath = new File("src/main/resources/com/example/animacionintro/music/victoryMusic.wav");
+    private File musicPath2 = new File("src/main/resources/com/example/animacionintro/music/victorySound.wav");
     private Clip clip;
+    private Clip clip2;
 
     public AudioInputStream getAudioInput() {
         return audioInput;
@@ -45,6 +47,21 @@ public class VictoryController implements Initializable {
         }
 
     }
+    public void playSound2(){
+        try {
+            audioInput = AudioSystem.getAudioInputStream(musicPath2);
+            clip2 = AudioSystem.getClip();
+            clip2.open(audioInput);
+            clip2.start();
+        }catch (UnsupportedAudioFileException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (LineUnavailableException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
     public void stopSound(){
         if(clip!=null){
             clip.stop();
@@ -56,6 +73,7 @@ public class VictoryController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         playSound();
+        playSound2();
 
         nextBTN.setOnAction(action ->{
             HelloApplication.openWindow("startPage-view.fxml");

@@ -307,16 +307,16 @@ public class HelloController implements Initializable {
 
                 for (int i=0;i<level.getEnemies().size();i++){
                     if (level.getEnemies().get(i).pos.getX()>canvas.getWidth()-25){
-                        avatar.pos.setX(canvas.getWidth()-25);
+                        level.getEnemies().get(i).pos.setX(canvas.getWidth()-25);
                     }
                     if (level.getEnemies().get(i).pos.getX()<25){
-                        avatar.pos.setX(25);
+                        level.getEnemies().get(i).pos.setX(25);
                     }
                     if (level.getEnemies().get(i).pos.getY()>canvas.getHeight()-25){
-                        avatar.pos.setY(canvas.getHeight()-25);
+                        level.getEnemies().get(i).pos.setY(canvas.getHeight()-25);
                     }
                     if (level.getEnemies().get(i).pos.getY()<25){
-                        avatar.pos.setY(25);
+                        level.getEnemies().get(i).pos.setY(25);
                     }
                 }
 
