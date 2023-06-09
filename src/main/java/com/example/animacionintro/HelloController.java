@@ -93,6 +93,7 @@ public class HelloController implements Initializable {
         musicPlayer.playSound(new File("src/main/resources/com/example/animacionintro/music/battleMusic.wav"));
 
         draw();
+        muros();
         enemyshoot(levels.get(currentLevel));
     }
     private String getBulletsText(){
@@ -212,7 +213,7 @@ public class HelloController implements Initializable {
                     gc.drawImage(level.getFondo(), 0, 0, canvas.getWidth(), canvas.getHeight());
                     gc.restore();
 
-                    detectedCollisionBW(level);
+
                     for (Wall w : level.getWalls()) {
                         w.draw();
                     }
@@ -350,6 +351,23 @@ public class HelloController implements Initializable {
             }
         });
         ae.start();
+    }
+
+    public void muros(){
+        Thread ba = new Thread(()->{
+            while(isAlive){
+                Level level=  levels.get(currentLevel);
+                Platform.runLater(()->{
+                    detectedCollisionBW(level);
+                });
+
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {e.printStackTrace();}
+
+            }
+        });
+        ba.start();
     }
 
 
