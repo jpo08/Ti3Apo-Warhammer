@@ -10,13 +10,13 @@ public class Explosion extends Drawing{
     public Explosion(int x, int y) {
         this.x=x;
         this.y=y;
-        String uri = "file:"+ HelloApplication.class.getResource("explosion.gif").getPath();
+        String uri = "file:"+ HelloApplication.class.getResource("boom.gif").getPath();
         sprite= new Image(uri);
     }
 
     @Override
     public void draw(GraphicsContext gc, boolean move) {
-        gc.drawImage(sprite,x, y, 50,50);
+        gc.drawImage(sprite,x, y, 60,60);
 
 
     }

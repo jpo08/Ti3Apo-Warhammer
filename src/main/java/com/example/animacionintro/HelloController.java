@@ -39,6 +39,7 @@ public class HelloController implements Initializable {
     private GraphicsContext gc;
     private ArrayList<Level> levels;
 
+
     private int currentLevel=0;
     Random random = new Random();
     private int numberEnemysLV1= random.nextInt(4)+3;
@@ -94,6 +95,7 @@ public class HelloController implements Initializable {
 
         draw();
         muros();
+        explosiones();
         enemyshoot(levels.get(currentLevel));
     }
     private String getBulletsText(){
@@ -175,6 +177,7 @@ public class HelloController implements Initializable {
 
     private ArrayList<AmmoBox> ammoBox=new ArrayList<>();
     private  Portal portal;
+    private ArrayList<Explosion> explosion= new ArrayList<>();
 
 
 
@@ -216,6 +219,9 @@ public class HelloController implements Initializable {
 
                     for (Wall w : level.getWalls()) {
                         w.draw();
+                    }
+                    for (int i= 0; i<explosion.size();i++){
+                        explosion.get(i).draw(gc,true);
                     }
 
                     detectColission2(level);
@@ -370,6 +376,23 @@ public class HelloController implements Initializable {
         ba.start();
     }
 
+    public void explosiones(){
+        Thread exp = new Thread(()->{
+            while(isAlive){
+
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {e.printStackTrace();}
+                for (int i= 0; i<explosion.size();i++){
+                    explosion.remove(explosion.get(i));
+                }
+
+            }
+        });
+        exp.start();
+    }
+
+
 
 
     public void avatarWallCollision(Level level){
@@ -440,6 +463,7 @@ public class HelloController implements Initializable {
             for (Bullet b: level.getBullets()){
                 if (b.getHitbox().intersects( w.getX(), w.getY(),50, 50)){
                     if (w.getShield()<1){
+                        explosion.add(new Explosion(w.getX(), w.getY()));
 
                         musicPlayer.playSound3(new File("src/main/resources/com/example/animacionintro/music/explosionSound.wav"));
                         level.getWalls().remove(w);
@@ -454,7 +478,7 @@ public class HelloController implements Initializable {
             for (Bullet be: level.getEnemyBullets()){
                 if (be.getHitbox().intersects( w.getX(), w.getY(),50, 50)){
                     if (w.getShield()<1){
-                        musicPlayer.stopSound3();
+                        explosion.add(new Explosion(w.getX(), w.getY()));
                         musicPlayer.playSound3(new File("src/main/resources/com/example/animacionintro/music/explosionSound.wav"));
                         level.getWalls().remove(w);
                     }else {
