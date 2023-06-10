@@ -54,10 +54,20 @@ public class Weapon extends Drawing {
 
     @Override
     public void draw(GraphicsContext gc, boolean move) {
-        if (puntero.pos.getX()> pos.getX()){
-            gc.drawImage(sprite, pos.getX(), pos.getY()-15, 30,22);
-        }else {
-            gc.drawImage(spriteL, pos.getX()-30,pos.getY()-15, 30,22);
+        double angle = Math.toDegrees(Math.atan2(puntero.pos.getY() - pos.getY(), puntero.pos.getX() - pos.getX()));
+
+        if (angle >= -90 && angle <= 90) {
+            gc.save();
+            gc.translate(pos.getX(), pos.getY());
+            gc.rotate(angle);
+            gc.drawImage(sprite, -0, -15, 30, 22);
+            gc.restore();
+        } else {
+            gc.save();
+            gc.translate(pos.getX(), pos.getY());
+            gc.rotate(angle + 180);
+            gc.drawImage(spriteL, -30, -15, 30, 22);
+            gc.restore();
         }
 
     }
